@@ -1,0 +1,63 @@
+// Multi-Agent Legal Research System Architecture
+digraph legal_research_architecture {
+	dpi=300 rankdir=TB size="12,8"
+	node [fontname=Arial fontsize=10]
+	edge [fontname=Arial fontsize=8]
+	ResearchManager [label="ResearchManager
+(Orchestrator)" fillcolor=lightblue fontsize=12 shape=box style=filled]
+	LegalPlannerAgent [label="LegalPlannerAgent
+(Planning Phase)" fillcolor=yellow shape=box style=filled]
+	LegalSearchAgent [label="LegalSearchAgent
+(Research Phase)" fillcolor=yellow shape=box style=filled]
+	LegalWriterAgent [label="LegalWriterAgent
+(Synthesis Phase)" fillcolor=yellow shape=box style=filled]
+	WebSearchTool [label="WebSearchTool
+(Web Search)" fillcolor=lightgreen shape=ellipse style=filled]
+	LegalSearchPlan [label="LegalSearchPlan
+(Search Strategy)" fillcolor=lavender shape=diamond style=filled]
+	LegalSearchItem [label="LegalSearchItem
+(Individual Search)" fillcolor=lavender shape=diamond style=filled]
+	LegalReportData [label="LegalReportData
+(Final Report)" fillcolor=lavender shape=diamond style=filled]
+	UserQuery [label="User Legal Query
+(Input)" fillcolor=lightyellow shape=box style=filled]
+	FinalReport [label="Legal Memorandum
+(Output)" fillcolor=lightcoral shape=box style=filled]
+	UserQuery -> ResearchManager [label="legal query"]
+	ResearchManager -> LegalPlannerAgent [label="1. plan_searches()"]
+	ResearchManager -> LegalSearchAgent [label="2. perform_searches()
+(parallel)" style=bold]
+	ResearchManager -> LegalWriterAgent [label="3. write_report()"]
+	ResearchManager -> FinalReport [label="final output"]
+	LegalPlannerAgent -> LegalSearchPlan [label=produces color=blue style=dashed]
+	LegalSearchPlan -> LegalSearchItem [label=contains color=blue style=dashed]
+	LegalWriterAgent -> LegalReportData [label=produces color=blue style=dashed]
+	LegalSearchAgent -> WebSearchTool [label=uses color=green style=dotted]
+	LegalSearchPlan -> LegalSearchAgent [label="search plan" color=purple style=dashed]
+	LegalSearchAgent -> LegalWriterAgent [label="search results" color=purple style=dashed]
+	subgraph cluster_legend {
+		fillcolor=white fontsize=14 label=Legend style=filled
+		legend_agent [label=Agent fillcolor=yellow shape=box style=filled]
+		legend_tool [label=Tool fillcolor=lightgreen shape=ellipse style=filled]
+		legend_data [label="Data Model" fillcolor=lavender shape=diamond style=filled]
+		legend_io [label="Input/Output" fillcolor=lightyellow shape=box style=filled]
+		legend_agent -> legend_tool [label="Tool Usage" color=green style=dotted]
+		legend_agent -> legend_data [label="Data Flow" color=blue style=dashed]
+	}
+	subgraph cluster_planning {
+		alpha=0.3 fillcolor=lightyellow label="Planning Phase" style=filled
+		LegalPlannerAgent
+		LegalSearchPlan
+		LegalSearchItem
+	}
+	subgraph cluster_research {
+		alpha=0.3 fillcolor=lightcyan label="Research Phase" style=filled
+		LegalSearchAgent
+		WebSearchTool
+	}
+	subgraph cluster_synthesis {
+		alpha=0.3 fillcolor=mistyrose label="Synthesis Phase" style=filled
+		LegalWriterAgent
+		LegalReportData
+	}
+}
