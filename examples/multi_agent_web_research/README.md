@@ -1,25 +1,68 @@
-# Multi-Agent Web Research
+# Multi-Agent Legal Research System
 
-This is a simple example of a multi-agent web research system. To run it:
+This is a complete multi-agent legal research system designed to assist with legal queries, case law research, and legal document preparation. To run it:
 
 ```bash
 python -m examples.multi_agent_web_research.main
 ```
 
-## Architecture
+## Legal Agents in the System
 
-The flow is:
+### 1. LegalPlannerAgent (`planner_agent.py`)
+- **Purpose**: Creates strategic research plans for legal queries
+- **Function**: Takes a legal question and generates 5-10 targeted web searches
+- **Output**: Structured plan with search terms and reasoning focused on finding case law, statutes, and legal precedents
+- **Model**: Uses `o4-mini` for efficient planning
 
-1. User enters their research topic
-2. `planner_agent` comes up with a plan to search the web for information. The plan is a list of search queries, with a search term and a reason for each query.
-3. For each search item, we run a `search_agent`, which uses the Web Search tool to search for that term and summarize the results. These all run in parallel.
-4. Finally, the `writer_agent` receives the search summaries, and creates a written report.
+### 2. LegalSearchAgent (`search_agent.py`)
+- **Purpose**: Performs specialized web searches for legal information
+- **Function**: Searches for specific legal terms, cases, or concepts and summarizes findings
+- **Features**:
+  - Uses WebSearchTool for comprehensive research
+  - Produces concise 2-3 paragraph summaries (under 300 words)
+  - Focuses on key legal principles, holdings, and relevant facts
+  - Designed for legal professionals synthesizing briefs or memorandums
 
-## Suggested improvements
+### 3. LegalWriterAgent (`writer_agent.py`)
+- **Purpose**: Synthesizes research into professional legal documents
+- **Function**: Creates comprehensive legal memorandums or briefs
+- **Output**:
+  - Structured legal analysis (Introduction, Facts, Issues, Analysis, Conclusion)
+  - Markdown-formatted reports with proper legal citations
+  - Short summaries and follow-up questions for further research
+- **Model**: Uses `o3` for sophisticated legal writing and analysis
 
-If you're building your own multi-agent research system, some ideas to add to this are:
+## System Workflow
 
-1. Retrieval: Add support for fetching relevant information from a vector store. You could use the File Search tool for this.
-2. Image and file upload: Allow users to attach PDFs or other files, as baseline context for the research.
-3. More planning and thinking: Models often produce better results given more time to think. Improve the planning process to come up with a better plan, and add an evaluation step so that the model can choose to improve its results, search for more stuff, etc.
-4. Code execution: Allow running code, which is useful for data analysis.
+1. **Planning**: User enters a legal query, and the LegalPlannerAgent creates a comprehensive research strategy
+2. **Research**: Multiple LegalSearchAgents run in parallel to gather information from web searches
+3. **Synthesis**: LegalWriterAgent creates a final legal memorandum or brief with proper structure and citations
+
+## Key Features
+
+- **Legal-Specific Intelligence**: All agents are specifically trained and prompted for legal research tasks
+- **Parallel Processing**: Multiple search agents work simultaneously for faster results
+- **Professional Output**: Generates properly structured legal documents with citations
+- **Comprehensive Coverage**: Searches for case law, statutes, legal precedents, and doctrines
+- **Interactive Tracing**: Built-in trace ID generation for monitoring the research process
+
+## Sample Legal Queries
+
+This system can handle various types of legal research:
+- Constitutional law questions
+- Contract interpretation issues
+- Tort liability analysis
+- Criminal law precedents
+- Corporate governance matters
+- Intellectual property disputes
+
+## Suggested Improvements for Legal Practice
+
+If you're building your own legal research system, consider these enhancements:
+
+1. **Legal Database Integration**: Add support for fetching information from Westlaw, LexisNexis, or other legal databases
+2. **Document Upload**: Allow users to attach case files, contracts, or other legal documents as baseline context
+3. **Citation Verification**: Implement automated citation checking and formatting (Bluebook, etc.)
+4. **Practice Area Specialization**: Create specialized agents for different areas of law (tax, patent, etc.)
+5. **Legal Code Execution**: Allow running calculations for damages, interest, or statutory compliance
+6. **Jurisdiction-Specific Research**: Tailor searches based on relevant jurisdictions and court levels
